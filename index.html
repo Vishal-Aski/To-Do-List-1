@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="adtodo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>To-Do List</h1>
+            <input type="text" id="taskInput" placeholder="Add a task">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <script src="">
+      let tasks = [];
+
+function addTask() {
+    const taskInput = document.getElementById('taskInput');
+    const taskText = taskInput.value.trim();
+
+    if (taskText !== '') {
+        const task = { text: taskText, completed: false };
+        tasks.push(task);
+        displayTasks();
+        taskInput.value = '';
+    }
+}
+
+function removeTask(index) {
+    tasks.splice(index, 1);
+    displayTasks();
+}
+
+function toggleTask(index) {
+    tasks[index].completed = !tasks[index].completed;
+    displayTasks();
+}
+
+function displayTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+
+    tasks.forEach((task, index) => {
+        const taskItem = document.createElement('li');
+        taskItem.className = 'taskItem';
+        if (task.completed) {
+            taskItem.classList.add('completed');
+        }
+
+        const taskContent = document.createElement('div');
+        taskContent.textContent = task.text;
+
+        const taskActions = document.createElement('div');
+        taskActions.className = 'actions';
+
+        const completedIcon = document.createElement('span');
+        completedIcon.className = 'completed-icon';
+        completedIcon.innerHTML = '&#10003;';
+        completedIcon.addEventListener('click', () => toggleTask(index));
+
+        const removeIcon = document.createElement('span');
+        removeIcon.className = 'remove-icon';
+        removeIcon.innerHTML = '&#10007;';
+        removeIcon.addEventListener('click', () => removeTask(index));
+
+        taskActions.appendChild(completedIcon);
+        taskActions.appendChild(removeIcon);
+
+        taskItem.appendChild(taskContent);
+        taskItem.appendChild(taskActions);
+
+        taskList.appendChild(taskItem);
+    });
+}
+
+window.onload = displayTasks;
+    </script>
+  
+</body>
+</html>
